@@ -9,17 +9,13 @@ def file_exists_in_queue(path_file, queue):
 def process(path_file, instance):
     if file_exists_in_queue(path_file, instance.queue):
         return None
-
     data = txt_importer(path_file)
-
     obj = {
         "nome_do_arquivo": path_file,
         "qtd_linhas": len(data),
         "linhas_do_arquivo": data,
     }
-
     instance.enqueue(obj)
-
     print(f"{obj}", file=sys.stdout)
 
 
@@ -33,4 +29,9 @@ def remove(instance):
 
 
 def file_metadata(instance, position):
-    """Aqui irá sua implementação"""
+    is_valid_position = 0 <= position < len(instance)
+    if is_valid_position:
+        item = instance.search(position)
+        print(item, file=sys.stdout)
+    else:
+        sys.stderr.write("Posição inválida")
